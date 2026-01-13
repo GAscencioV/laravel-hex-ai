@@ -23,12 +23,10 @@ En el `composer.json` de tu **nuevo proyecto Laravel**, agrega lo siguiente dent
 "repositories": [
     {
         "type": "vcs",
-        "url": "https://github.com/tu-usuario/laravel-hex-ai"
+        "url": "https://github.com/GAscencioV/laravel-hex-ai"
     }
 ]
 ```
-
-_(Asegúrate de cambiar `tu-usuario` por tu nombre de usuario real en GitHub)._
 
 ### 2. Requerir el paquete
 
