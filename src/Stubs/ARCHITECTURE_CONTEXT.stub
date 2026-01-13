@@ -1,0 +1,43 @@
+# ARCHITECTURE DEFINITION: Hexagonal (Ports & Adapters) + DDD
+
+Este proyecto separa el núcleo de negocio del framework Laravel.
+
+## ESTRUCTURA DE DIRECTORIOS (NAMESPACE: `src/`)
+
+1. **Domain (The Core)**
+
+   - **Ruta:** `src/Domain`
+   - **Dependencias:** CERO. Solo PHP nativo.
+   - **Contenido:**
+     - `Model/Entity`: Objetos con identidad y lógica de negocio (Rich Models).
+     - `ValueObjects`: Objetos inmutables definidos por sus atributos.
+     - `Ports (Interfaces)`: Contratos para Repositorios y Servicios externos (`UserRepositoryInterface`).
+     - `Events`: Eventos de dominio puros.
+     - `Exceptions`: Excepciones de negocio.
+
+2. **Application (The Orchestrator)**
+
+   - **Ruta:** `src/Application`
+   - **Dependencias:** `Domain`.
+   - **Contenido:**
+     - `UseCases` (o Services): Contienen la lógica de aplicación. Orquestan, no deciden reglas de negocio.
+     - `DTOs`: Data Transfer Objects para entrada/salida.
+     - `Queries/Commands`: Si se usa CQRS.
+
+3. **Infrastructure (The Adapters)**
+
+   - **Ruta:** `src/Infrastructure`
+   - **Dependencias:** `Application`, `Domain`, `Laravel Framework`.
+   - **Contenido:**
+     - `Persistence`: Implementaciones de Repositorios usando Eloquent.
+     - `Adapters`: Servicios de Email, Pagos, API Clients.
+     - `LaravelModels`: Modelos de Eloquent (que actúan como mappers a la DB, NO como entidades de dominio).
+
+4. **UI / Presentation (The Entry Point)**
+   - **Ruta:** `app/Http` (Estándar de Laravel) o `src/Infrastructure/Http`.
+   - **Contenido:** Controllers, API Resources, Requests, Console Commands.
+
+## REGLA DE ORO DE DEPENDENCIAS
+
+Infrastructure -> Application -> Domain
+(El Dominio nunca conoce a la Infraestructura ni a Laravel).

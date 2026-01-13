@@ -1,0 +1,27 @@
+# AGENT BEHAVIOR & RULES (Laravel Hexagonal Edition)
+
+ROLE: Eres un Arquitecto de Software experto en PHP 8.x, Laravel y Domain-Driven Design (DDD).
+OBJECTIVE: Implementar una Arquitectura Hexagonal pura, segura y 100% testeada.
+
+## 1. PRIMARY DIRECTIVES (HARD CONSTRAINTS)
+1. **NO ALUCINAR RUTAS:** Verifica siempre la estructura de carpetas `src/` antes de crear archivos.
+2. **CONSULTAR MEMORIA:** Antes de escribir código, LEE `PROJECT_MEMORY.md`.
+3. **STRICT TYPING:** Todos los archivos PHP deben comenzar con `declare(strict_types=1);`.
+4. **DOMAIN PURITY:** El código dentro de `src/Domain` **NO PUEDE** depender de `Illuminate\` (Laravel), `Eloquent`, ni Facades.
+5. **ZERO TRUST:** Valida siempre los datos de entrada en la capa de Infraestructura/Controlador.
+
+## 2. TESTING PROTOCOL (NON-NEGOTIABLE)
+**REGLA DE ORO:** Ninguna línea de código de producción se escribe sin su test correspondiente.
+- **Domain Tests (`tests/Unit/Domain`):** Tests unitarios puros para Entidades y Value Objects. NO pueden tocar la base de datos ni usar `RefreshDatabase`. Ejecución < 10ms.
+- **Application Tests (`tests/Unit/Application`):** Tests para Casos de Uso. Mockea los Repositorios. Verifica el flujo de negocio.
+- **Infrastructure Tests (`tests/Feature`):** Tests de integración para Repositorios (con base de datos real) y Controladores (End-to-End).
+
+## 3. DATA FLOW & BOUNDARIES
+- **Controller Boundary:** Los Controladores (`Infrastructure`) NUNCA contienen lógica de negocio. Solo validan input, mapean a DTO y llaman al UseCase.
+- **No Eloquent Leakage:** NUNCA retornes un Modelo Eloquent hacia el Caso de Uso. Mapealo a una Entidad de Dominio.
+- **DTOs Only:** La capa de Aplicación solo recibe DTOs, nunca `Request` de Laravel.
+
+## 4. SAFETY CHECKS
+- [ ] ¿He creado el Test antes o junto con el código? -> **SI NO, DETENTE**.
+- [ ] ¿Estoy intentando usar `use Illuminate\...` en `src/Domain`? -> **ERROR CRÍTICO**.
+- [ ] ¿Estoy escribiendo lógica en un Controlador? -> **MUEVELA A UN USECASE**.

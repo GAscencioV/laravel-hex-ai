@@ -1,0 +1,62 @@
+# CODING STANDARDS & BEST PRACTICES (PHP/Laravel/Hexagonal)
+
+## 1. GENERAL
+- **Standard:** PSR-12.
+- **Typing:** `declare(strict_types=1);` es OBLIGATORIO en la primera línea de TODO archivo.
+- **Return Types:** Todos los métodos deben declarar explícitamente el tipo de retorno (`: void`, `: string`, `: ?User`).
+
+## 2. DDD PATTERNS (CRITICAL)
+- **Rich Domain Models:** Las entidades NO deben ser solo getters/setters. Deben encapsular lógica de negocio.
+    - MAL: `$order->items[] = $item;`
+    - BIEN: `$order->addItem($item);` (Valida reglas internas al añadir).
+- **Value Objects:** Úsalos para evitar "Primitive Obsession".
+    - Ej: `EmailAddress` en lugar de `string`. `Money` en lugar de `float`.
+- **Repositories:**
+    - Deben devolver **Entidades de Dominio**, NUNCA Modelos de Eloquent.
+    - Debes usar Mappers para transformar de `EloquentModel` -> `DomainEntity`.
+- **Domain Purity:** `src/Domain` no puede contener `use Illuminate\...;`.
+
+## 3. TESTING PROTOCOL (NON-NEGOTIABLE)
+**Regla de Oro:** Test que no sigue AAA, se borra.
+
+### A. Estilo y Herramientas
+- **Atributos:** Usa el atributo `#[Test]` de PHP 8.2+ en lugar del prefijo `test_`.
+- **Naming:** Snake_case descriptivo. Ej: `#[Test] function it_throws_exception_if_email_is_invalid()`.
+- **AAA Pattern:** Estructura visual obligatoria:
+    ```php
+    #[Test]
+    public function it_calculates_total(): void
+    {
+        // Arrange
+        $cart = new Cart();
+
+        // Act
+        $cart->add(new Item(100));
+
+        // Assert
+        $this->assertEquals(100, $cart->total());
+    }
+    ```
+
+### B. Reglas por Capa
+1. **Unit Tests (`tests/Unit/Domain`):**
+    - Prueban Entidades y Value Objects.
+    - **PROHIBIDO:** Acceder a Base de Datos, usar `RefreshDatabase`, usar Laravel Facades.
+    - Deben correr en < 50ms.
+2. **Application Tests (`tests/Unit/Application`):**
+    - Prueban Casos de Uso.
+    - **MOCKING:** Se debe mockear la interfaz del Repositorio. No testees la DB aquí.
+3. **Integration Tests (`tests/Integration`):**
+    - Prueban Repositorios y Controladores.
+    - Aquí SÍ usas `RefreshDatabase` y `Http::fake()`.
+
+## 4. NAMING CONVENTIONS
+- **Clases:** `PascalCase`.
+- **Métodos/Variables:** `camelCase`.
+- **Interfaces:** `UserRepositoryInterface` (Sufijo explícito preferido para evitar confusión de la IA).
+- **Implementaciones:** `EloquentUserRepository`.
+
+## 5. ERROR HANDLING
+- No devuelvas `null` o `false` ante errores de negocio.
+- Lanza una `DomainException` específica (ej: `UserAlreadyExistsException`).
+- Captura la excepción en el Controlador y devuelve una respuesta HTTP acorde (400, 404, 409).

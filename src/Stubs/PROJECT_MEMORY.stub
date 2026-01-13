@@ -1,0 +1,43 @@
+# PROJECT MEMORY: {{ PROJECT_NAME }}
+
+**Last Update:** {{ DATE }}
+**Current Context:** Inicio del desarrollo de la lógica de negocio (DDD).
+
+## ESTADO ACTUAL DEL SISTEMA (Contexto Inmutable)
+
+El proyecto ya cuenta con la infraestructura base de Arquitectura Hexagonal totalmente configurada:
+
+1.  **Estructura:** Las carpetas `src/Domain`, `src/Application` y `src/Infrastructure` existen.
+2.  **Autoload:** El namespace `Src\` está mapeado y activo en `composer.json`.
+3.  **Framework:** Laravel está instalado y listo para servir como host.
+
+**NOTA AL AGENTE:** No es necesario realizar configuraciones de entorno, ni crear carpetas raíz, ni modificar el composer.json. Asume que la arquitectura está lista y enfócate puramente en el código.
+
+## ROADMAP & TASKS
+
+### Fase 1: Core Domain Definition (PRIORIDAD ACTUAL)
+_Objetivo: Modelar las reglas de negocio puras sin dependencias externas._
+
+- [ ] Crear `SharedKernel` para Value Objects reutilizables (ej: `UuidGenerator`, `Money`, `EmailAddress`).
+- [ ] Definir la Entidad Raíz (Aggregate Root) del módulo principal.
+- [ ] Implementar la lógica de negocio y validaciones dentro de la Entidad.
+- [ ] Definir las Interfaces de Repositorio (Puertos) en `Domain/Repositories`.
+- [ ] Crear Excepciones de Dominio personalizadas (`DomainException`).
+
+### Fase 2: Application Layer & Use Cases
+_Objetivo: Orquestar el flujo de datos y conectar el exterior con el dominio._
+
+- [ ] Implementar DTOs (Request/Response) para aislar el dominio.
+- [ ] Crear Servicios de Aplicación (Use Cases / Handlers).
+- [ ] Escribir Unit Tests para los Casos de Uso (mocking de repositorios).
+
+### Fase 3: Infrastructure & Adapters
+_Objetivo: Implementar la persistencia y la entrada HTTP._
+
+- [ ] Crear Modelos de Eloquent (como mappers, no como entidades).
+- [ ] Implementar los Repositorios (Adapters) usando Eloquent.
+- [ ] Configurar el ServiceProvider para inyectar las implementaciones en las interfaces.
+- [ ] Crear Controladores API y Rutas.
+
+## DECISION LOG
+- [INICIO]: Se establece que el desarrollo comenzará directamente en la capa de Dominio, asumiendo la infraestructura técnica como resuelta.
