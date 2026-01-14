@@ -11,21 +11,24 @@ Este paquete no solo crea carpetas; inyecta el **contexto arquitectónico** nece
 - **Contexto para IA:** Genera archivos `.md` en la raíz (`PROJECT_MEMORY`, `ARCHITECTURE`, `CODING_STANDARDS`) que sirven como "memoria a largo plazo" para tu Agente de IA.
 - **Rules Injection:** Configura automáticamente las reglas de comportamiento para Google Antigravity.
 
+## ✅ Requisitos
+
+- PHP ^8.2
+- Laravel 10.x, 11.x o 12.x
+- Composer
+
 ## 📦 Instalación
 
-Como este paquete está alojado en GitHub (y no en Packagist públicamente por ahora), debes indicar a Composer dónde buscarlo.
+Como este paquete está alojado en GitHub, debes indicar a Composer dónde buscarlo.
 
-### 1. Configurar el repositorio
+Ejecuta estos dos comandos en tu terminal:
 
-En el `composer.json` de tu **nuevo proyecto Laravel**, agrega lo siguiente dentro de la clave `repositories`:
+### 1. Configurar el origen
 
-```json
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/GAscencioV/laravel-hex-ai"
-    }
-]
+Dile a Composer dónde descargar el paquete (GitHub):
+
+```bash
+composer config repositories.hex-ai vcs https://github.com/GAscencioV/laravel-hex-ai
 ```
 
 ### 2. Requerir el paquete
@@ -76,9 +79,9 @@ src/
 │       └── Controllers/
 └── tests/
     ├── Unit/
-    │   ├── Domain/         # Tests Unitarios Puros (<10ms)
-    │   └── Application/    # Tests de Casos de Uso (con Mocks)
-    └── Integration/        # Tests de Infraestructura (con DB)
+    │   ├── Domain/         # Tests Unitarios Puros
+    │   └── Application/    # Tests de Casos de Uso
+    └── Integration/        # Tests de Infraestructura
 ```
 
 ## 🧠 Archivos Generados para la IA
