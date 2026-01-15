@@ -66,31 +66,47 @@ El comando transformará tu proyecto Laravel estándar en esto:
 
 ```text
 src/
-├── Domain/                 # Núcleo: Entidades, Value Objects, Puertos
-│   ├── Shared/
-│   └── (BoundedContexts)/
-├── Application/            # Orquestación: Use Cases, DTOs
-│   └── UseCases/
-├── Infrastructure/         # Adaptadores: Eloquent, Controllers, API
-│   ├── Persistence/
-│   │   └── Eloquent/
-│   │       └── Models/     # Aquí vivirán tus modelos (User.php, etc)
-│   └── Http/
-│       └── Controllers/
+├── Domain/                         # Reglas de Negocio (PHP Puro)
+│   ├── Entities/                   # Modelos ricos con identidad
+│   ├── ValueObjects/               # Objetos inmutables (Email, Money)
+│   ├── Repositories/               # Interfaces (Contratos/Puertos)
+│   ├── Events/                     # Eventos de Dominio
+│   ├── Exceptions/                 # Excepciones de Negocio
+│   └── Services/                   # Lógica que no cabe en Entidades
+├── Application/                    # Orquestación
+│   ├── UseCases/
+│   │   ├── Commands/               # Escritura (Create, Update)
+│   │   └── Queries/                # Lectura (Get, Search)
+│   ├── DTOs/                       # Datos de entrada/salida
+│   ├── Interfaces/                 # Contratos para servicios externos
+│   └── Services/                   # Implementaciones de aplicación
+├── Infrastructure/                 # Detalles Técnicos (Laravel)
+│   ├── Persistence/Eloquent/
+│   │   ├── Models/                 # Modelos Eloquent (Mappers)
+│   │   └── Repositories/           # Implementación de Interfaces
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   ├── Requests/
+│   │   ├── Resources/
+│   │   └── Middleware/
+│   ├── Services/                   # Mailer, Stripe, etc.
+│   └── Providers/                  # Configuración e Inyección
 └── tests/
     ├── Unit/
-    │   ├── Domain/         # Tests Unitarios Puros
-    │   └── Application/    # Tests de Casos de Uso
-    └── Integration/        # Tests de Infraestructura
+    │   ├── Domain/                 # Tests Unitarios Puros
+    │   └── Application/            # Tests de Casos de Uso
+    └── Integration/
+        └── Infrastructure/         # Tests de Infraestructura
 ```
 
-## 🧠 Archivos Generados para la IA
+## 🧠 Contexto de IA (Google Antigravity Ready)
 
-El comando genera archivos clave para que asistentes como **Cursor** o **Antigravity** trabajen mejor:
+El paquete genera una estructura modular de reglas en `.agent/rules/` para optimizar el contexto de la IA:
 
-- **`PROJECT_MEMORY.md`**: Un archivo vivo para llevar el roadmap y estado del proyecto.
-- **`ARCHITECTURE.md`**: Explica a la IA que el código vive en `src/` y no en `app/`.
-- **`CODING_STANDARDS.md`**: Reglas estrictas de TDD, DDD y Tipado Estricto.
+- `.agent/rules/00-core-behavior.md`: Directivas primarias del agente.
+- `.agent/rules/01-architecture.md`: Definición de Arquitectura Hexagonal.
+- `.agent/rules/02-coding-style.md`: Estándares PSR-12, DDD y Testing.
+- `PROJECT_MEMORY.md`: Archivo en raíz para el roadmap y estado del proyecto.
 
 ## 📄 Licencia
 
