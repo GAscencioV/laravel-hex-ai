@@ -79,9 +79,12 @@ class InstallCommand extends Command
     {
         // Mapa: 'Nombre del Stub' => 'Ruta relativa'
         $files = [
-            'antigravityrules.stub'     => '.antigravity/rules.md',
-            'ARCHITECTURE_CONTEXT.stub' => 'ARCHITECTURE.md',
-            'CODING_STANDARDS.stub'     => 'CODING_STANDARDS.md',
+            // Reglas Estáticas (Ocultas y Modulares)
+            'antigravityrules.stub'     => '.agent/rules/00-core-behavior.md',
+            'ARCHITECTURE_CONTEXT.stub' => '.agent/rules/01-architecture.md',
+            'CODING_STANDARDS.stub'     => '.agent/rules/02-coding-style.md',
+            
+            // Memoria Dinámica (Visible en Raíz)
             'PROJECT_MEMORY.stub'       => 'PROJECT_MEMORY.md',
         ];
 
@@ -95,7 +98,7 @@ class InstallCommand extends Command
             ]);
         }
         
-        $this->info('🧠 Archivos de contexto para Antigravity generados.');
+        $this->info('🧠 Contexto de IA generado en .agent/rules/ y PROJECT_MEMORY.md');
     }
 
     protected function moveDefaultModels()
